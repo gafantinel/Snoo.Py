@@ -43,7 +43,7 @@ def color_pick(status):
 
 def resolver(url):
     try:
-        r = requests.get(url,timeout=10)
+        r = requests.get(url,timeout=10,allow_redirects=False)
         try:
             status = r.status_code
         except:
