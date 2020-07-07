@@ -12,8 +12,8 @@ Check response status and server from a list of urls
 
 Usage:
 
-`python3 snoo.py <URL_FILE> <CONCURRENCY>`
+`python3 snoo.py <CONCURRENCY> < <URLS_FILE>`
 
-Example:
+or
 
-`python3 snoo.py urls.txt 50`
+`cat <URLS_FILE> | python3 snoo.py <CONCURRENCY>`
