@@ -2,6 +2,7 @@
 import requests
 import sys
 import concurrent.futures
+from lxml.html import fromstring
 
 
 def banner():
@@ -53,6 +54,12 @@ def resolver(url):
         except:
             status = "Unknown"
         try:
+            # title = r.content['title']
+            content = fromstring(r.content)
+            title = content.findtext('.//title').replace('\n','')
+        except:
+            title = "Unknown"
+        try:
             server = r.headers['server']
         except:
             server = "Unknown"
@@ -63,7 +70,7 @@ def resolver(url):
         color = color_pick(status)
 
         print(
-            f"{url}  {color}=>  [Status: {colors.BOLD}{status}{colors.ENDC}{color}, Server: {colors.BOLD}{server}{colors.ENDC}{color}, Size: {colors.BOLD}{size}]{colors.ENDC}", flush=True)
+            f"{url}  {color}=>  [Status: {colors.BOLD}{status}{colors.ENDC}{color}, Title: {colors.BOLD}{title}{colors.ENDC}{color}, Server: {colors.BOLD}{server}{colors.ENDC}{color}, Size: {colors.BOLD}{size}]{colors.ENDC}", flush=True)
     except KeyboardInterrupt:
         print("Exiting...")
         exit(1)
