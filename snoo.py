@@ -48,7 +48,8 @@ def color_pick(status):
 
 def resolver(url):
     try:
-        r = requests.get(url, timeout=10, allow_redirects=False)
+
+        r = requests.get(url, timeout=10, allow_redirects=redirect)
         try:
             status = r.status_code
         except:
@@ -68,9 +69,13 @@ def resolver(url):
         except:
             size = "Unknown"
         color = color_pick(status)
-
+        try:
+            if '301' in str(r.history[0]) or '302' in str(r.history[0]):
+                print('[REDIR]',end=" ")
+        except:
+            a = ''
         print(
-            f"{url}  {color}=>  [Status: {colors.BOLD}{status}{colors.ENDC}{color}, Title: {colors.BOLD}{title}{colors.ENDC}{color}, Server: {colors.BOLD}{server}{colors.ENDC}{color}, Size: {colors.BOLD}{size}]{colors.ENDC}", flush=True)
+            f"{url}  {color}=>  [Status: {colors.BOLD}{status}{colors.ENDC}{color} | Title: {colors.BOLD}{title}{colors.ENDC}{color} | Server: {colors.BOLD}{server}{colors.ENDC}{color} | Size: {colors.BOLD}{size}]{colors.ENDC}", flush=True)
     except KeyboardInterrupt:
         print("Exiting...")
         exit(1)
@@ -90,7 +95,11 @@ if __name__ == "__main__":
         concurrency = int(sys.argv[1])
     except IndexError:
         concurrency = 5
-
+    try:
+        if (sys.argv[2] == '-r'):
+            redirect = True
+    except IndexError:
+            redirect = False
     urls = []
 
     for line in sys.stdin:
